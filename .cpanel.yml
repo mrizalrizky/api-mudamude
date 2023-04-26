@@ -1,0 +1,5 @@
+---
+deployment:
+      tasks:
+        - export DEPLOYPATH=/home/rizalriz/api-mudamude
+        - /bin/cp /home/rizalriz/repositories/api-mudamude $DEPLOYPATH
