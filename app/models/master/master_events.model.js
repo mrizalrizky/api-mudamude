@@ -6,8 +6,7 @@ module.exports = (sequelize, DataTypes) => {
   class master_events extends Model {
     static associate(models) {
       master_events.belongsTo(models.masterEventCategory, {
-        foreignKey: 'id_event',
-        as: 'category'
+        foreignKey: 'id_category',
       })
     }
   }
@@ -23,6 +22,9 @@ module.exports = (sequelize, DataTypes) => {
         model: 'master_categories',
         key: 'id_category'
       }
+    },
+    slug: {
+      type: DataTypes.STRING
     },
     title: {
       type: DataTypes.STRING,

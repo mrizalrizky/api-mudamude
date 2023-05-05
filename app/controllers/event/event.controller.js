@@ -2,55 +2,52 @@ const db = require('../../models/index')
 const service = require('../../services/errorHandler')
 const jsonMessage = require('../../jsonFormat/jsonMessage')
 const masterEventRepo = require('../../repositories/master/masterEvent.repositories')(db)
+const moment = require('moment')
 let message
 let myError = new Error()
 
 const uploadEvent = async (req, res) => {
-    // const { id_category, title, description, organizer_name, location, date } = req.body
-    const id_category = req.body.id_category
-    const title = req.body.title
-    const description = req.body.description
-    const organizer_name = req.body.organizer_name
-    const location = req.body.location
-    const date = req.body.date
+    const { id_category, title, description, organizer_name, location, date } = req.body
 
     try {
-        if(!id_category) {
-            message = {
-                "indonesian": "ID Category tidak boleh kosong",
-                "english": "ID Category cannot be empty"
-            }
-            myError.status = 500
-            myError.outputJson = jsonMessage.jsonFailed(500, message)
-            throw myError
-        }
-        
         if(!title) {
             message = {
                 "indonesian": "Title tidak boleh kosong",
                 "english": "Title cannot be empty"
             }
-            myError.status = 500
-            myError.outputJson = jsonMessage.jsonFailed(500, message)
+            myError.status = 400
+            myError.outputJson = jsonMessage.jsonFailed('MUDAMUDE-400', message)
             throw myError
         }
+
+        if(!id_category) {
+            message = {
+                "indonesian": "ID Category tidak boleh kosong",
+                "english": "ID Category cannot be empty"
+            }
+            myError.status = 400
+            myError.outputJson = jsonMessage.jsonFailed('MUDAMUDE-400', message)
+            throw myError
+        }
+        
     
         if(!organizer_name) {
             message = {
                 "indonesian": "Organizer name tidak boleh kosong",
                 "english": "Organizer name cannot be empty"
             }
-            myError.status = 500
-            myError.outputJson = jsonMessage.jsonFailed(500, message)
+            myError.status = 400
+            myError.outputJson = jsonMessage.jsonFailed('MUDAMUDE-400', message)
             throw myError
         }
+        
         if(!location) {
             message = {
                 "indonesian": "Lokasi tidak boleh kosong",
                 "english": "Location cannot be empty"
             }
-            myError.status = 500
-            myError.outputJson = jsonMessage.jsonFailed(500, message)
+            myError.status = 400
+            myError.outputJson = jsonMessage.jsonFailed('MUDAMUDE-400', message)
             throw myError
         }
     
@@ -59,24 +56,217 @@ const uploadEvent = async (req, res) => {
                 "indonesian": "Tanggal tidak boleh kosong",
                 "english": "Date cannot be empty"
             }
-            myError.status = 500
-            myError.outputJson = jsonMessage.jsonFailed(500, message)
+            myError.status = 400
+            myError.outputJson = jsonMessage.jsonFailed('MUDAMUDE-400', message)
             throw myError
         }
+        
+        const postData = await masterEventRepo.uploadEvent(id_category, title, description, organizer_name, location, date)
+        message = {
+            "english": "Event created successfully",
+            "indonesian": "Event berhasil dibuat"
+        }
+
+        res.status(200).send(jsonMessage.jsonSuccess('MUDAMUDE-200', message, postData))
     } catch (error) {
-        service.handleError(error, res, error.status || 500, message)
+        service.handleError(error, res)
     }
+}
+
+const getAllEvent = async (req, res) => {
+    try {
+        const getData = await masterEventRepo.getAllEvent()
+
+        if(!getData) {
+            message = {
+                "indonesian": "Gagal GET Data",
+                "english": "Failed To Retrieve Data"
+            }
+
+            myError.status = 500,
+            myError.outputJson = jsonMessage.jsonFailed('MUDAMUDE-500', message)
+            throw myError
+        }
+
+        message = {
+            "indonesian": "Berhasil GET Data",
+            "english": "Successfully Retrieved Data"
+        }
+
+        res.status(200).send(jsonMessage.jsonSuccess('MUDAMUDE-200', message, getData))
+    } catch (error) {
+        service.handleError(error, res)
+    }
+}
+
+const getEventDetail = async (req, res) => {
+    try {
+        const slug = req.params.slug
+
+        if(!slug) {
+            message = {
+                "indonesian": "Slug tidak boleh kosong",
+                "english": "Slug cannot be empty"
+            }
+            myError.status = 400,
+            myError.outputJson = jsonMessage.jsonFailed('MUDAMUDE-400', message)
+            throw myError
+        }
+
+        const getData = await masterEventRepo.getEventDetail(slug)
+
+        message = {
+            "indonesian": "Berhasil GET Data",
+            "english": "Successfully Retrieved Data",
+        }
+
+        res.status(200).send(jsonMessage.jsonSuccess('MUDAMUDE-200', message, getData))
+    } catch (error) {
+        service.handleError(error, res)
+    }
+}
+
+const getListUpcomingEvent = async (req, res) => {
+    try {
+        // Event yang akan diadakan dalam 7 hari
+        const startDate = moment().format('YYYY-MM-DD')
+        const endDate = moment().add(7, 'days').format('YYYY-MM-DD')
+
+        const getData = await masterEventRepo.getListUpcomingEvent(startDate, endDate)
+
+        message = {
+            "indonesian": "Berhasil GET Data",
+            "english": "Successfully Retrieved Data",
+        }
+
+        res.status(200).send(jsonMessage.jsonSuccess('MUDAMUDE-200', message, getData))
+    } catch (error) {
+        service.handleError(error, res)
+    }
+}
+
+const getListPopularEvent = async (req, res) => {
+
+}
+
+const getListEventByTitle = async (req, res) => {
+    try {
+        const title = req.params.title
+
+        if(!title) {
+            message = {
+                "indonesian": "Title tidak boleh kosong",
+                "english": "Title cannot be empty",
+            }
+            myError.status = 400,
+            myError.outputJson = jsonMessage.jsonFailed('MUDAMUDE-400', message)
+
+            throw myError
+        }
+
+        const getData = await masterEventRepo.getListEventByTitle(title)
+
+        message = {
+            "indonesian": "Berhasil GET data",
+            "english": "Successfully retrieved data",
+        }
+
+        res.status(200).send(jsonMessage.jsonSuccess('MUDAMUDE-200', message, getData))
+    } catch (error) {
+        service.handleError(error, res)
+    }
+}
+
+const getListEventByDate = async (req, res) => {
+    let date = req.params.date
+    date = moment(date).format('YYYY-MM-DD')
+
+    try {
+        if(!date) {
+            message = {
+                "indonesian": "Tanggal tidak boleh kosong",
+                "english": "Date cannot be empty",
+            }
+            myError.status = 400,
+            myError.outputJson = jsonMessage.jsonFailed('MUDAMUDE-400', message)
+            throw myError
+        }
+
+        const getData = await masterEventRepo.getListEventByDate(date)
     
-    const postData = await masterEventRepo.uploadEvent(id_category, title, description, organizer_name, location, date)
-    message = {
-        "english": "Event created successfully",
-        "indonesian": "Event berhasil dibuat"
+        message = {
+            "indonesian": "Berhasil GET data",
+            "english": "Successfully retrieved data",
+        }
+    
+        res.status(200).send(jsonMessage.jsonSuccess('MUDAMUDE-200', message, getData))
+    } catch (error) {
+        service.handleError(error, res)
     }
-    res.status(200).send(jsonMessage.jsonSuccess(200, message, postData))
+}
 
+const getListEventByLocation = async (req, res) => {
+    try {
+        const location = req.params.location
 
+        if(!location) {
+            message = {
+                "indonesian": "Lokasi tidak boleh kosong",
+                "english": "Location cannot be mepty",
+            }
+            myError.status = 400,
+            myError.outputJson = jsonMessage.jsonFailed('MUDAMUDE-400', message)
+            throw myError
+        }
+
+        const getData = await masterEventRepo.getListEventByLocation(location)
+
+        message = {
+            "indonesian": "Berhasil GET data",
+            "english": "Successfully Retrieved Data"
+        }
+
+        res.status(200).send(jsonMessage.jsonSuccess('MUDAMUDE-200', message, getData))
+    } catch (error) {
+        service.handleError(error, res)
+    }
+}
+
+const getListEventByCategory = async (req, res) => {
+    try {
+        const id_category = req.params.id_category
+
+        if(!id_category) {
+            message = {
+                "indonesian": "ID Category tidak boleh kosong",
+                "english": "ID Category cannot be empty",
+            }
+            myError.status = 400,
+            myError.outputJson = jsonMessage.jsonFailed('MUDAMUDE-400', message)
+            throw myError
+        }
+
+        const getData = await masterEventRepo.getListEventByCategory(id_category)
+
+        message = {
+            "indonesian": "Berhasil GET Data",
+            "english": "Successfully Retrieved Data",
+        }
+
+        res.status(200).send(jsonMessage.jsonSuccess('MUDAMUDE-200', message, getData))
+    } catch (error) {
+        service.handleError(error, res)
+    }
 }
 
 module.exports = {
     uploadEvent,
+    getAllEvent,
+    getEventDetail,
+    getListUpcomingEvent,
+    getListPopularEvent,
+    getListEventByTitle,
+    getListEventByDate,
+    getListEventByLocation,
+    getListEventByCategory
 }

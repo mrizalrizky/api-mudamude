@@ -7,6 +7,7 @@ module.exports = {
         password: process.env.DB_PASSWORD,
         database: process.env.DB_NAME,
         dialect: 'mysql',
+        define: { aliases: false },
         pool: {
             max: 5, // max connection
             min: 0, // min connection
