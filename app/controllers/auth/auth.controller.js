@@ -50,17 +50,7 @@ const userSignUp = async (req, res) => {
             throw myError
         }
 
-        if(!id_role) {
-            message = {
-                "indonesian": "ID Role tidak boleh kosong",
-                "english": "ID Role cannot be empty"
-            }
-            myError.status = 500
-            myError.outputJson = jsonMessage.jsonFailed(500, message)
-            throw myError
-        }
-
-        const postData = await mudamudeUserRepo.userSignUp(fullName, username, email, password, id_role)
+        const postData = await mudamudeUserRepo.userSignUp(fullName, username, email, password)
         message = {
             "english": "User registered successfully",
             "indonesian": "User berhasil terdaftar"
@@ -69,7 +59,7 @@ const userSignUp = async (req, res) => {
         res.status(200).send(jsonMessage.jsonSuccess(200, message, postData))
 
     } catch (error) {
-        service.handleError(error, res, error.status || 500, message)
+        service.handleError(error, res)
     }
 }
 

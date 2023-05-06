@@ -5,6 +5,9 @@ const {
 module.exports = (sequelize, DataTypes) => {
   class master_roles extends Model {
     static associate(models) {
+      master_roles.hasOne(models.mudamudeUser, {
+        foreignKey: 'id_role'
+      })
     }
   }
   master_roles.init({

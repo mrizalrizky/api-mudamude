@@ -13,26 +13,20 @@ db.sequelize = sequelize;
 db.Sequelize = Sequelize;
 
 db.mudamudeUser = require('./user/mudamude_user.model')(sequelize, Sequelize)
-db.roles = require('./master/master_roles.model')(sequelize, Sequelize)
+db.masterRoles = require('./master/master_roles.model')(sequelize, Sequelize)
 db.masterEvent = require('./master/master_events.model')(sequelize, Sequelize)
 db.uploadedEvents = require('./event/uploaded_events.model')(sequelize, Sequelize)
-// db.registeredEvents = require('./events/registered_events.model')(sequelize, Sequelize)
+db.registeredEvents = require('./event/registered_events.model')(sequelize, Sequelize)
 db.masterEventCategory = require("./master/master_categories.model")(sequelize, Sequelize)
+db.masterRatingType = require('./master/master_rating_types.model')(sequelize, Sequelize)
+db.postRatings = require('./posts/post_ratings.model')(sequelize, Sequelize)
+db.postComments = require('./posts/post_comments.model')(sequelize, Sequelize)
+db.postsDB = require('./posts/posts.model')(sequelize, Sequelize)
 
 Object.keys(db).forEach(modelName => {
   if (db[modelName].associate) {
     db[modelName].associate(db);
   }
 });
-
-db.mudamudeUser.belongsTo(db.uploadedEvents, {
-  foreignKey: 'id_user',
-  as: 'event'
-})
-
-// db.masterEvent.belongsTo(db.masterEventCategory, {
-//   foreignKey: 'id_event',
-//   as: 'category'
-// })
 
 module.exports = db;

@@ -32,13 +32,13 @@ module.exports = (sequelize, DataTypes) => {
     description: {
       type: DataTypes.STRING,
     },
-    organizer_name: {
-      type: DataTypes.STRING,
+    id_organizer: {
+      type: DataTypes.INTEGER,
     },
     location: {
       type: DataTypes.STRING,
     },
-    date: {
+    event_date: {
       type: DataTypes.DATE,
     },
   }, {

@@ -21,13 +21,13 @@ module.exports = {
       description: {
         type: Sequelize.STRING
       },
-      organizer_name: {
+      id_organizer: {
         type: Sequelize.STRING
       },
       location: {
         type: Sequelize.STRING
       },
-      date: {
+      event_date: {
         type: Sequelize.DATE
       },
       

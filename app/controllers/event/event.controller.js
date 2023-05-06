@@ -7,7 +7,10 @@ let message
 let myError = new Error()
 
 const uploadEvent = async (req, res) => {
-    const { id_category, title, description, organizer_name, location, date } = req.body
+    const { id_category, title, description, organizer_name, location, price } = req.body
+    const eventDate = req.body.event_date
+    const eventTime = req.body.event_time
+    const eventDuration = req.body.duration
 
     try {
         if(!title) {
@@ -29,7 +32,6 @@ const uploadEvent = async (req, res) => {
             myError.outputJson = jsonMessage.jsonFailed('MUDAMUDE-400', message)
             throw myError
         }
-        
     
         if(!organizer_name) {
             message = {
@@ -51,17 +53,37 @@ const uploadEvent = async (req, res) => {
             throw myError
         }
     
-        if(!date) {
+        if(!eventDate) {
             message = {
-                "indonesian": "Tanggal tidak boleh kosong",
-                "english": "Date cannot be empty"
+                "indonesian": "Tanggal Event tidak boleh kosong",
+                "english": "Event Date cannot be empty"
             }
             myError.status = 400
             myError.outputJson = jsonMessage.jsonFailed('MUDAMUDE-400', message)
             throw myError
         }
+
+        if(!eventTime) {
+            message = {
+                "indonesian": "Event Time tidak boleh kosong",
+                "english": "Event Time cannot be empty",
+            }
+            myError.status = 400,
+            myError.outputJson = jsonMessage.jsonFailed('MUDAMUDE-400', message)
+            throw myError
+        }
+
+        if(!eventDuration) {
+            message = {
+                "indonesian": "Duration tidak boleh kosong",
+                "english": "Duration cannot be empty",
+            }
+            myError.status = 400,
+            myError.outputJson = jsonMessage.jsonFailed('MUDAMUDE-400', message)
+            throw myError
+        }
         
-        const postData = await masterEventRepo.uploadEvent(id_category, title, description, organizer_name, location, date)
+        const postData = await masterEventRepo.uploadEvent(id_category, title, description, organizer_name, location, eventDate, eventTime, eventDuration)
         message = {
             "english": "Event created successfully",
             "indonesian": "Event berhasil dibuat"
