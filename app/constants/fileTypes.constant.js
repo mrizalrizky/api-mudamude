@@ -1,0 +1,5 @@
+module.exports = {
+    FOTO_KTP: 'FOTO_KTP',
+    EVENT_BANNER: 'EVENT_BANNER',
+    USER_AVATAR: 'USER_AVATAR'
+}

@@ -1,0 +1,5 @@
+module.exports = {
+    FOTO_KTP_PATH: '/KTP_DOCS',
+    EVENT_BANNER_PATH: '/BANNER_IMAGES',
+    USER_AVATAR_PATH: '/USER_AVATAR'
+}

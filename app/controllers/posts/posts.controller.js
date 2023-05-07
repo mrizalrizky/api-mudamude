@@ -1,6 +1,7 @@
 const db = require('../../models/index')
 const jsonMessage = require('../../jsonFormat/jsonMessage')
 const service = require('../../services/errorHandler')
+const FileTypeConstant = require('../../constants/fileTypes.constant')
 const postsRepo = require('../../repositories/posts/posts.repositories')(db)
 const postRatingsRepo = require('../../repositories/posts/postRatings.repositories')(db)
 let message

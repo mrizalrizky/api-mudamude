@@ -22,6 +22,7 @@ db.masterRatingType = require('./master/master_rating_types.model')(sequelize, S
 db.postRatings = require('./posts/post_ratings.model')(sequelize, Sequelize)
 db.postComments = require('./posts/post_comments.model')(sequelize, Sequelize)
 db.postsDB = require('./posts/posts.model')(sequelize, Sequelize)
+db.filesDB = require('./files.model')(sequelize, Sequelize)
 
 Object.keys(db).forEach(modelName => {
   if (db[modelName].associate) {

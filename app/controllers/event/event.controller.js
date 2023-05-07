@@ -7,7 +7,8 @@ let message
 let myError = new Error()
 
 const uploadEvent = async (req, res) => {
-    const { id_category, title, description, organizer_name, location, price } = req.body
+    const { id_category, title, description, id_organizer, location } = req.body
+    const ticketPrice = req.body.ticket_price
     const eventDate = req.body.event_date
     const eventTime = req.body.event_time
     const eventDuration = req.body.duration
@@ -33,10 +34,10 @@ const uploadEvent = async (req, res) => {
             throw myError
         }
     
-        if(!organizer_name) {
+        if(!id_organizer) {
             message = {
-                "indonesian": "Organizer name tidak boleh kosong",
-                "english": "Organizer name cannot be empty"
+                "indonesian": "ID Organizer tidak boleh kosong",
+                "english": "ID Organizer cannot be empty"
             }
             myError.status = 400
             myError.outputJson = jsonMessage.jsonFailed('MUDAMUDE-400', message)
@@ -49,6 +50,16 @@ const uploadEvent = async (req, res) => {
                 "english": "Location cannot be empty"
             }
             myError.status = 400
+            myError.outputJson = jsonMessage.jsonFailed('MUDAMUDE-400', message)
+            throw myError
+        }
+
+        if(!ticketPrice) {
+            message = {
+                "indonesian": "Harga Tiket tidak boleh kosong",
+                "english": "Ticket Price cannot be empty",
+            }
+            myError.status = 400,
             myError.outputJson = jsonMessage.jsonFailed('MUDAMUDE-400', message)
             throw myError
         }
@@ -83,7 +94,17 @@ const uploadEvent = async (req, res) => {
             throw myError
         }
         
-        const postData = await masterEventRepo.uploadEvent(id_category, title, description, organizer_name, location, eventDate, eventTime, eventDuration)
+        const postData = await masterEventRepo.uploadEvent(id_category, title, description, id_organizer, location, ticketPrice, eventDate, eventTime, eventDuration)
+        if(!postData) {
+            message = {
+                "indonesian": "Gagal POST Data",
+                "english": "Failed to POST Data",
+            }
+            myError.status = 500,
+            myError.outputJson = jsonMessage.jsonFailed('MUDAMUDE-500', message)
+            throw myError
+        }
+        
         message = {
             "english": "Event created successfully",
             "indonesian": "Event berhasil dibuat"
