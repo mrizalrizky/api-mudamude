@@ -1,9 +1,7 @@
 const sequelize = require('sequelize')
-const { createSlug } = require('../../utils/createSlug')
 
 function masterEventRepository (db) {
-    const uploadEvent = async (id_category, title, description, id_organizer, location, ticket_price, event_date, event_time, duration) => {
-        const slug = await createSlug(title)
+    const uploadEvent = async (id_category, title, slug, description, id_organizer, location, ticket_price, event_date, event_time, duration) => {
         return db.masterEvent.create({
             id_category,
             title,
@@ -33,10 +31,10 @@ function masterEventRepository (db) {
     const getListUpcomingEvent = (startDate, endDate) => {
         return db.masterEvent.findAll({
             where: {
-                date: {
+                event_date: {
                     [sequelize.Op.between]: [startDate, endDate]
                 }
-            }, order: ['date']
+            }, order: ['event_date']
         })
     }
 
@@ -54,11 +52,11 @@ function masterEventRepository (db) {
         })
     }
 
-    const getListEventByDate = (date) => {
+    const getListEventByDate = (event_date) => {
         return db.masterEvent.findAll({
             where: {
-                date: {
-                    [sequelize.Op.startsWith]: date
+                event_date: {
+                    [sequelize.Op.startsWith]: event_date
                 }
             }
         })

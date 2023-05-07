@@ -3,6 +3,7 @@ const service = require('../../services/errorHandler')
 const jsonMessage = require('../../jsonFormat/jsonMessage')
 const masterEventRepo = require('../../repositories/master/masterEvent.repositories')(db)
 const moment = require('moment')
+const { createEventSlug } = require('../../utils/createEventSlug')
 let message
 let myError = new Error()
 
@@ -93,8 +94,10 @@ const uploadEvent = async (req, res) => {
             myError.outputJson = jsonMessage.jsonFailed('MUDAMUDE-400', message)
             throw myError
         }
+
+        const slug = await createEventSlug(title)
         
-        const postData = await masterEventRepo.uploadEvent(id_category, title, description, id_organizer, location, ticketPrice, eventDate, eventTime, eventDuration)
+        const postData = await masterEventRepo.uploadEvent(id_category, title, slug, description, id_organizer, location, ticketPrice, eventDate, eventTime, eventDuration)
         if(!postData) {
             message = {
                 "indonesian": "Gagal POST Data",

@@ -5,7 +5,6 @@ module.exports = {
   async up (queryInterface, Sequelize) {
     await queryInterface.addColumn('mudamude_users', 'verified_flag', {
       type: Sequelize.INTEGER,
-      allowNull: false,
     })
   },
 

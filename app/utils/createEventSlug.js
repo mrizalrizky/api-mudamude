@@ -2,7 +2,7 @@ const slugify = require('slugify')
 const db = require('../models/index')
 const { Op } = require('sequelize')
 
-exports.createSlug = async (title) => {
+exports.createEventSlug = async (title) => {
     let slug = slugify(title, {
         replacement: '-',
         lower: true

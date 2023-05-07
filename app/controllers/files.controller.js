@@ -54,7 +54,7 @@ const insertNewFile = async (req, res) => {
             "english": "Successfully POST Data",
         }
 
-        res.status(200).send(jsonMessage.jsonSuccess('MUDAMUDE-200', message))
+        res.status(200).send(jsonMessage.jsonSuccess('MUDAMUDE-200', message, postData))
     } catch (error) {
         service.handleError(error, res)
     }
