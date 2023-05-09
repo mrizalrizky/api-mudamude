@@ -1,13 +1,13 @@
 const sequelize = require('sequelize')
 
 function masterEventRepository (db) {
-    const uploadEvent = async (id_category, title, slug, description, id_organizer, location, ticket_price, event_date, event_time, duration) => {
+    const uploadEvent = async (id_category, title, slug, description, organizer_name, location, ticket_price, event_date, event_time, duration) => {
         return db.masterEvent.create({
             id_category,
             title,
             slug,
             description,
-            id_organizer,
+            organizer_name,
             location,
             ticket_price,
             event_date,

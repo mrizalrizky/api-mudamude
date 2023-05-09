@@ -32,7 +32,7 @@ module.exports = (sequelize, DataTypes) => {
     description: {
       type: DataTypes.STRING,
     },
-    id_organizer: {
+    organizer_name: {
       type: DataTypes.INTEGER,
     },
     location: {

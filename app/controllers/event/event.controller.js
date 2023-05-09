@@ -8,7 +8,7 @@ let message
 let myError = new Error()
 
 const uploadEvent = async (req, res) => {
-    const { id_category, title, description, id_organizer, location } = req.body
+    const { id_category, title, description, organizer_name, location } = req.body
     const ticketPrice = req.body.ticket_price
     const eventDate = req.body.event_date
     const eventTime = req.body.event_time
@@ -35,7 +35,7 @@ const uploadEvent = async (req, res) => {
             throw myError
         }
     
-        if(!id_organizer) {
+        if(!organizer_name) {
             message = {
                 "indonesian": "ID Organizer tidak boleh kosong",
                 "english": "ID Organizer cannot be empty"
@@ -97,7 +97,7 @@ const uploadEvent = async (req, res) => {
 
         const slug = await createEventSlug(title)
         
-        const postData = await masterEventRepo.uploadEvent(id_category, title, slug, description, id_organizer, location, ticketPrice, eventDate, eventTime, eventDuration)
+        const postData = await masterEventRepo.uploadEvent(id_category, title, slug, description, organizer_name, location, ticketPrice, eventDate, eventTime, eventDuration)
         if(!postData) {
             message = {
                 "indonesian": "Gagal POST Data",

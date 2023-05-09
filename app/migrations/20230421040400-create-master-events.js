@@ -21,7 +21,7 @@ module.exports = {
       description: {
         type: Sequelize.STRING
       },
-      id_organizer: {
+      organizer_name: {
         type: Sequelize.STRING
       },
       location: {
