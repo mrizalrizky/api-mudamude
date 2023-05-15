@@ -49,6 +49,8 @@ function mudamudeUserRepository (db) {
                 sequelize.col('uploaded_events.master_event.organizer_name', 'organizer_name'),
                 sequelize.col('uploaded_events.master_event.event_date', 'event_date'),
                 sequelize.col('uploaded_events.master_event.slug', 'slug'),
+                sequelize.col('uploaded_events.master_event.master_category.id_category', 'id_category'),
+                sequelize.col('uploaded_events.master_event.master_category.name', 'category_name')
             ],
             include:
             {
@@ -58,7 +60,11 @@ function mudamudeUserRepository (db) {
 
                 include: {
                     model: db.masterEvent,
-                    attributes: []
+                    attributes: [],
+                    include: {
+                        model: db.masterEventCategory,
+                        attributes: []
+                    }
                 }
             },
             raw: true,
