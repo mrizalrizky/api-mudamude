@@ -11,7 +11,9 @@ function masterEventRepository(db) {
     ticket_price,
     event_date,
     event_time,
-    duration
+    duration,
+    benefit,
+    eligibility
   ) => {
     return db.masterEvent.create({
       id_category,
@@ -24,15 +26,16 @@ function masterEventRepository(db) {
       event_date,
       event_time,
       duration,
+      benefit,
+      eligibility,
     });
   };
 
   const getAllEvent = () => {
     return db.masterEvent.findAll({
       attributes: [
-        sequelize.col("master_category.name", "category_name"),
+        [sequelize.col("master_category.name"), "category_name"],
         "id_event",
-        "id_category",
         "slug",
         "title",
         "description",
@@ -56,6 +59,25 @@ function masterEventRepository(db) {
       where: {
         slug,
       },
+      attributes: [
+        [sequelize.col("master_category.name"), "category_name"],
+        "id_event",
+        "slug",
+        "title",
+        "description",
+        "organizer_name",
+        "location",
+        "event_date",
+        "createdAt",
+        "updatedAt",
+      ],
+      include: [
+        {
+          model: db.masterEventCategory,
+          attributes: [],
+          required: true,
+        },
+      ],
     });
   };
 

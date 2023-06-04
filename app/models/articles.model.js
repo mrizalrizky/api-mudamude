@@ -1,42 +1,41 @@
 "use strict";
 const { Model } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
-  class files extends Model {
+  class articles extends Model {
+    /**
+     * Helper method for defining associations.
+     * This method is not a part of Sequelize lifecycle.
+     * The `models/index` file will call this method automatically.
+     */
     static associate(models) {
       // define association here
     }
   }
-  files.init(
+  articles.init(
     {
-      id_file: {
-        type: DataTypes.INTEGER,
-        primaryKey: true,
-        autoIncrement: true,
-        allowNull: false,
-      },
-      id_user: {
-        type: DataTypes.INTEGER,
-      },
-      id_event: {
-        type: DataTypes.INTEGER,
-      },
       id_article: {
         type: DataTypes.INTEGER,
+        allowNull: false,
+        primaryKey: true,
+        autoIncrement: true,
       },
-      filename: {
+      id_file: {
+        type: DataTypes.INTEGER,
+      },
+      title: {
         type: DataTypes.STRING,
       },
-      folderpath: {
-        type: DataTypes.STRING,
+      content: {
+        type: DataTypes.TEXT,
       },
-      filetype: {
+      source: {
         type: DataTypes.STRING,
       },
     },
     {
       sequelize,
-      modelName: "files",
+      modelName: "articles",
     }
   );
-  return files;
+  return articles;
 };

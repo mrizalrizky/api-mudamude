@@ -1,8 +1,8 @@
 module.exports = (app) => {
   let router = require("express").Router();
-  //   let articleController = require("../../controllers/articles.controller")(db);
+  let articleController = require("../controllers/articles.controller");
 
-  //   router.get('/all');
+  router.get("/all", articleController.getAllArticles);
   // router.get('/:slug/detail')
 
   app.use("/api/articles", router);
