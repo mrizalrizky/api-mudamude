@@ -1,9 +1,10 @@
 module.exports = (app) => {
-    let router = require('express').Router()
-    const authController = require('../../controllers/auth/auth.controller')
+  let router = require("express").Router();
+  const authController = require("../../controllers/auth/auth.controller");
+  const validator = require("../../validators/auth.validator");
 
-    router.post('/register', authController.userSignUp)
-    router.post('/login', authController.userLogin)
+  router.post("/register", validator.register, authController.userSignUp);
+  router.post("/login", validator.login, authController.userLogin);
 
-    app.use('/api/auth', router)
-}
+  app.use("/api/auth", router);
+};
