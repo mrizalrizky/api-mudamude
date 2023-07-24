@@ -92,44 +92,25 @@ function masterEventRepository(db) {
     });
   };
 
-  const getListEventByTitle = (title) => {
-    return db.masterEvent.findAll({
-      where: {
-        title: {
-          [sequelize.Op.like]: `${title}`,
-        },
-      },
-      include: {
-        model: db.masterEventCategory,
-        // as: 'category'
-      },
-    });
-  };
+  const getListEventFilter = (userInputs) => {
+    // console.log(filter);
+    // const filterBy = {};
 
-  const getListEventByDate = (event_date) => {
-    return db.masterEvent.findAll({
-      where: {
-        event_date: {
-          [sequelize.Op.startsWith]: event_date,
-        },
-      },
-    });
-  };
+    const filter = {};
+    if (userInputs.title) filter.title = userInputs.title;
+    if (userInputs.location) filter.location = userInputs.location;
+    if (userInputs.eventDate) filter.eventDate = userInputs.eventDate;
+    if (userInputs.id_category) filter.id_category = userInputs.id_category;
 
-  const getListEventByLocation = (location) => {
-    return db.masterEvent.findAll({
-      where: {
-        location: {
-          [sequelize.Op.like]: `%${location}%`,
-        },
-      },
+    Object.entries(userInputs).forEach(([key, value]) => {
+      filter[key] = {
+        [sequelize.Op.like]: `%${value}%`,
+      };
     });
-  };
 
-  const getListEventByCategory = (id_category) => {
     return db.masterEvent.findAll({
       where: {
-        id_category,
+        [sequelize.Op.and]: [filter],
       },
     });
   };
@@ -139,10 +120,7 @@ function masterEventRepository(db) {
     getAllEvent,
     getEventDetail,
     getListUpcomingEvent,
-    getListEventByTitle,
-    getListEventByDate,
-    getListEventByLocation,
-    getListEventByCategory,
+    getListEventFilter,
   };
 }
 

@@ -226,119 +226,15 @@ const getListUpcomingEvent = async (req, res) => {
 
 const getListPopularEvent = async (req, res) => {};
 
-const getListEventByTitle = async (req, res) => {
+const getListEventFilter = async (req, res) => {
   try {
-    const title = req.params.title;
-
-    if (!title) {
-      message = {
-        indonesian: "Title tidak boleh kosong",
-        english: "Title cannot be empty",
-      };
-      (myError.status = 400),
-        (myError.outputJson = jsonMessage.jsonFailed("MUDAMUDE-400", message));
-
-      throw myError;
-    }
-
-    const getData = await masterEventRepo.getListEventByTitle(title);
-
-    message = {
-      indonesian: "Berhasil GET data",
-      english: "Successfully retrieved data",
-    };
-
-    res
-      .status(200)
-      .send(jsonMessage.jsonSuccess("MUDAMUDE-200", message, getData));
-  } catch (error) {
-    service.handleError(error, res);
-  }
-};
-
-const getListEventByDate = async (req, res) => {
-  let date = req.params.date;
-  date = moment(date).format("YYYY-MM-DD");
-
-  try {
-    if (!date) {
-      message = {
-        indonesian: "Tanggal tidak boleh kosong",
-        english: "Date cannot be empty",
-      };
-      (myError.status = 400),
-        (myError.outputJson = jsonMessage.jsonFailed("MUDAMUDE-400", message));
-      throw myError;
-    }
-
-    const getData = await masterEventRepo.getListEventByDate(date);
-
-    message = {
-      indonesian: "Berhasil GET data",
-      english: "Successfully retrieved data",
-    };
-
-    res
-      .status(200)
-      .send(jsonMessage.jsonSuccess("MUDAMUDE-200", message, getData));
-  } catch (error) {
-    service.handleError(error, res);
-  }
-};
-
-const getListEventByLocation = async (req, res) => {
-  try {
-    const location = req.params.location;
-
-    if (!location) {
-      message = {
-        indonesian: "Lokasi tidak boleh kosong",
-        english: "Location cannot be mepty",
-      };
-      (myError.status = 400),
-        (myError.outputJson = jsonMessage.jsonFailed("MUDAMUDE-400", message));
-      throw myError;
-    }
-
-    const getData = await masterEventRepo.getListEventByLocation(location);
-
-    message = {
-      indonesian: "Berhasil GET data",
-      english: "Successfully Retrieved Data",
-    };
-
-    res
-      .status(200)
-      .send(jsonMessage.jsonSuccess("MUDAMUDE-200", message, getData));
-  } catch (error) {
-    service.handleError(error, res);
-  }
-};
-
-const getListEventByCategory = async (req, res) => {
-  try {
-    const id_category = req.params.id_category;
-
-    if (!id_category) {
-      message = {
-        indonesian: "ID Category tidak boleh kosong",
-        english: "ID Category cannot be empty",
-      };
-      (myError.status = 400),
-        (myError.outputJson = jsonMessage.jsonFailed("MUDAMUDE-400", message));
-      throw myError;
-    }
-
-    const getData = await masterEventRepo.getListEventByCategory(id_category);
+    const getData = await masterEventRepo.getListEventFilter(req.query);
 
     message = {
       indonesian: "Berhasil GET Data",
       english: "Successfully Retrieved Data",
     };
-
-    res
-      .status(200)
-      .send(jsonMessage.jsonSuccess("MUDAMUDE-200", message, getData));
+    res.send(jsonMessage.jsonSuccess("MUDAMUDE-200", message, getData));
   } catch (error) {
     service.handleError(error, res);
   }
@@ -350,8 +246,5 @@ module.exports = {
   getEventDetail,
   getListUpcomingEvent,
   getListPopularEvent,
-  getListEventByTitle,
-  getListEventByDate,
-  getListEventByLocation,
-  getListEventByCategory,
+  getListEventFilter,
 };
