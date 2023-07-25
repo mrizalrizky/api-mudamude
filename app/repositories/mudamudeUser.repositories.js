@@ -10,7 +10,6 @@ function mudamudeUserRepository(db) {
     id_role = 3,
     verified_flag = 0
   ) => {
-    console.log(fullName, username, email, password);
     return db.mudamudeUser.create({
       fullName,
       username,

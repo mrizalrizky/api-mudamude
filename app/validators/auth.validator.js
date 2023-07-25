@@ -8,7 +8,7 @@ exports.login = (req, res, next) => {
   }).unknown(true);
 
   const { error } = schema.validate(req.body);
-  console.log(error);
+
   if (error) {
     return res
       .status(BAD_REQUEST)

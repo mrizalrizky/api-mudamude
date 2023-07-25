@@ -10,7 +10,6 @@ let myError = new Error();
 const userSignUp = async (req, res) => {
   const { full_name, username, email, password, repeat_password } = req.body;
 
-  console.log(repeat_password);
   try {
     if (!full_name) {
       message = {
@@ -126,16 +125,13 @@ const userLogin = async (req, res) => {
       throw myError;
     }
 
-    console.log(userData);
-    // const mapData = {
-    //   email:
-    // };
-
     message = {
       indonesian: "Login berhasil",
       english: "Login successful",
     };
-    res.status(200).send(jsonMessage.jsonSuccess("MUDAMUDE-00", message));
+    res
+      .status(200)
+      .send(jsonMessage.jsonSuccess("MUDAMUDE-00", message, userData));
   } catch (error) {
     service.handleError(error, res);
   }

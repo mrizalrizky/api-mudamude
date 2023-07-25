@@ -40,8 +40,22 @@ const userLogin = async (username, password) => {
     const user = await mudamudeUserRepo.userLogin(username, password);
 
     if (user) {
-      const token = jwt.sign({ id: user.id_user }, process.env.TOKEN_SECRET);
-      return user;
+      const token = jwt.sign({ id: user.username }, process.env.TOKEN_SECRET, {
+        expiresIn: "1h",
+      });
+
+      const mapUserData = {
+        id_user: user?.id_user,
+        id_role: user?.id_role,
+        username: user?.username,
+        full_name: user?.fullName,
+        email: user?.email,
+        phone: user?.institution,
+        major: user?.major,
+        access_token: token,
+      };
+
+      return mapUserData;
     }
   } catch (error) {
     return {
