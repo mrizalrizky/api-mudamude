@@ -32,9 +32,11 @@ function mudamudeUserRepository(db) {
     }
   };
 
-  const getUserInfo = (condition) => {
+  const getUserInfo = (username) => {
     return db.mudamudeUser.findOne({
-      where: condition,
+      where: {
+        username,
+      },
       attributes: [
         "id_user",
         "id_role",
@@ -49,6 +51,7 @@ function mudamudeUserRepository(db) {
         model: db.masterRoles,
         attributes: ["name"],
       },
+      logging: true,
     });
   };
 

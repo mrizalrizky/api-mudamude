@@ -6,9 +6,10 @@ const { encryptPassword } = require("../../utils/encrypt");
 
 const userSignUp = async (fullName, username, email, password) => {
   try {
-    const userExist = await mudamudeUserRepo.getUserInfo({ username });
+    const userExist = await mudamudeUserRepo.getUserInfo(username);
 
     if (userExist) {
+      console.log("userEXIST", userExist);
       message = {
         indonesian: "Username yang anda pilih sudah terdaftar",
         english: "Username already exist",
@@ -19,14 +20,12 @@ const userSignUp = async (fullName, username, email, password) => {
       };
     }
 
-    const postData = await mudamudeUserRepo.userSignUp(
+    return await mudamudeUserRepo.userSignUp(
       fullName,
       username,
       email,
       await encryptPassword(password)
     );
-
-    return postData;
   } catch (error) {
     return {
       error: true,

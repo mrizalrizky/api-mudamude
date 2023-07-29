@@ -68,14 +68,16 @@ const userSignUp = async (req, res) => {
       password
     );
 
-    if (userData.error) {
-      myError.status = BAD_REQUEST;
-      myError.outputJson = jsonMessage.jsonFailed(
-        "MUDAMUDE-400",
-        userData.errorData
-      );
-      throw myError;
-    }
+    console.log("USER DATA", userData);
+
+    // if (userData.error) {
+    //   myError.status = BAD_REQUEST;
+    //   myError.outputJson = jsonMessage.jsonFailed(
+    //     "MUDAMUDE-400",
+    //     userData.errorData
+    //   );
+    //   throw myError;
+    // }
 
     message = {
       english: "User registered successfully",
