@@ -6,7 +6,7 @@ const { encryptPassword } = require("../../utils/encrypt");
 
 const userSignUp = async (fullName, username, email, password) => {
   try {
-    const userExist = await mudamudeUserRepo.getUserInfo(username);
+    const userExist = await mudamudeUserRepo.getUserInfoByUsername(username);
 
     if (userExist) {
       console.log("userEXIST", userExist);
@@ -20,7 +20,7 @@ const userSignUp = async (fullName, username, email, password) => {
       };
     }
 
-    return await mudamudeUserRepo.userSignUp(
+    return mudamudeUserRepo.userSignUp(
       fullName,
       username,
       email,
@@ -51,6 +51,7 @@ const userLogin = async (username, password) => {
         email: user?.email,
         phone: user?.institution,
         major: user?.major,
+        verified_flag: user?.verified_flag,
         access_token: token,
       };
 

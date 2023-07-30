@@ -61,7 +61,7 @@ function postsRepository(db) {
     });
   };
 
-  const getListUserPostByUsername = (username) => {
+  const getPostListByUsername = (username) => {
     return db.postsDB.findAll({
       where: {
         id_user: {
@@ -108,7 +108,7 @@ function postsRepository(db) {
     deleteUserPost,
     getAllPosts,
     getPostDetailBySlug,
-    getListUserPostByUsername,
+    getPostListByUsername,
     getPostCommentsById,
   };
 }

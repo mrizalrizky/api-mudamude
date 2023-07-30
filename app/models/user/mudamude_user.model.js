@@ -37,6 +37,7 @@ module.exports = (sequelize, DataTypes) => {
       phone: DataTypes.STRING,
       institution: DataTypes.STRING,
       major: DataTypes.STRING,
+      verified_flag: DataTypes.TINYINT,
     },
     {
       sequelize,

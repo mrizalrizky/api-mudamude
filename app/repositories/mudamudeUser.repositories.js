@@ -32,7 +32,7 @@ function mudamudeUserRepository(db) {
     }
   };
 
-  const getUserInfo = (username) => {
+  const getUserInfoByUsername = (username) => {
     return db.mudamudeUser.findOne({
       where: {
         username,
@@ -143,7 +143,7 @@ function mudamudeUserRepository(db) {
   return {
     userSignUp,
     userLogin,
-    getUserInfo,
+    getUserInfoByUsername,
     getUserUploadedEvents,
     getUserRegisteredEvents,
     setUserVerified,

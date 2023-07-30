@@ -20,7 +20,7 @@ const getUserInfo = async (req, res) => {
       throw myError;
     }
 
-    const data = await mudamudeUserRepo.getUserInfo(username);
+    const data = await mudamudeUserRepo.getUserInfoByUsername(username);
     message = {
       indonesian: "Berhasil GET Data",
       english: "Successfully Retrieved Data",

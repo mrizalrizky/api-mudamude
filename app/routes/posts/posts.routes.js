@@ -1,14 +1,14 @@
 module.exports = (app) => {
-    let router = require('express').Router()
-    let postController = require('../../controllers/posts/posts.controller')
+  let router = require("express").Router();
+  let postController = require("../../controllers/posts/posts.controller");
 
-    router.post('/', postController.createUserPost)
-    router.delete('/:slug', postController.deleteUserPost)
-    router.get('/all', postController.getAllPosts)
-    router.get('/:slug/detail', postController.getPostDetail)
-    router.get('/comments', postController.getPostComments)
-    router.get('/ratings', postController.getPostRatings)
-    router.get('/:username', postController.getListUserPosts)
+  router.post("/", postController.createUserPost);
+  router.delete("/:slug", postController.deleteUserPost);
+  router.get("/all", postController.getAllPosts);
+  router.get("/:slug/detail", postController.getPostDetails);
+  router.get("/:username", postController.getUserPostList);
+  // router.get("/comments", postController.getPostComments);
+  // router.get("/ratings", postController.getPostRatings);
 
-    app.use('/api/posts', router)
-}
+  app.use("/api/posts", router);
+};

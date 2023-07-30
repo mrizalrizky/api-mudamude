@@ -5,7 +5,7 @@ function masterRolesRepository(db) {
     return db.masterRoles.findAll({
       where: {
         price: {
-          [sequelize.Op.not]: null,
+          [sequelize.Op.ne]: null,
         },
       },
     });
@@ -14,6 +14,9 @@ function masterRolesRepository(db) {
   const getAllRoleExcludeUserRole = (username) => {
     return db.masterRoles.findAll({
       where: {
+        // price: {
+        //   [sequelize.Op.ne]: null,
+        // },
         id_role: {
           [sequelize.Op.notIn]: [
             sequelize.literal(
@@ -21,7 +24,18 @@ function masterRolesRepository(db) {
             ),
           ],
         },
+        // [sequelize.Op.and]: [
+        //   sequelize.where(
+        //     sequelize.fn(
+        //       "NOTIN",
+        //       sequelize.col(
+        //         `SELECT id_role FROM mudamude_users WHERE username='${username}'`
+        //       )
+        //     )
+        //   ),
+        // ],
       },
+      logging: true,
     });
   };
 
