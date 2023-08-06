@@ -9,7 +9,6 @@ const userSignUp = async (fullName, username, email, password) => {
     const userExist = await mudamudeUserRepo.getUserInfoByUsername(username);
 
     if (userExist) {
-      console.log("userEXIST", userExist);
       message = {
         indonesian: "Username yang anda pilih sudah terdaftar",
         english: "Username already exist",
@@ -39,9 +38,18 @@ const userLogin = async (username, password) => {
     const user = await mudamudeUserRepo.userLogin(username, password);
 
     if (user) {
-      const token = jwt.sign({ id: user.username }, process.env.TOKEN_SECRET, {
-        expiresIn: "1h",
-      });
+      const token = jwt.sign(
+        {
+          id: user?.id_user,
+          username: user?.username,
+          institution: user?.institution,
+          verified_flag: user?.verified_flag,
+        },
+        process.env.TOKEN_SECRET,
+        {
+          expiresIn: "1h",
+        }
+      );
 
       const mapUserData = {
         id_user: user?.id_user,
@@ -65,7 +73,32 @@ const userLogin = async (username, password) => {
   }
 };
 
+const verifyUserData = async (userId, fullName, birthdate) => {
+  try {
+    const bodyToUpdate = {
+      fullname: fullName,
+      verified_flag: true,
+    };
+
+    const whereStat = {
+      id_user: userId,
+    };
+    const putData = await mudamudeUserRepo.updateUserData(
+      bodyToUpdate,
+      whereStat
+    );
+
+    return putData;
+  } catch (error) {
+    return {
+      error: true,
+      errorData: error,
+    };
+  }
+};
+
 module.exports = {
   userSignUp,
   userLogin,
+  verifyUserData,
 };

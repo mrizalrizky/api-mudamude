@@ -132,11 +132,9 @@ function mudamudeUserRepository(db) {
     });
   };
 
-  const setUserVerified = (username) => {
-    return db.mudamudeUser.update({
-      where: {
-        username,
-      },
+  const updateUserData = (bodyStatement, whereStatement) => {
+    return db.mudamudeUser.update(bodyStatement, {
+      where: whereStatement,
     });
   };
 
@@ -146,7 +144,7 @@ function mudamudeUserRepository(db) {
     getUserInfoByUsername,
     getUserUploadedEvents,
     getUserRegisteredEvents,
-    setUserVerified,
+    updateUserData,
   };
 }
 

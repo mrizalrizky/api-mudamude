@@ -139,7 +139,54 @@ const userLogin = async (req, res) => {
   }
 };
 
+const verifyUser = async (req, res) => {
+  try {
+    const userId = req.body.id_user;
+    const fullName = req.body.full_name;
+    const birthdate = req.body.birthdate;
+
+    if (!userId) {
+      message = {
+        indonesian: "User ID tidak boleh kosong",
+        english: "User ID cannot be empty",
+      };
+
+      myError.status = 400;
+      myError.outputJson = jsonMessage.jsonFailed("MUDAMUDE-400", message);
+      throw myError;
+    }
+    if (!fullName) {
+      message = {
+        indonesian: "Nama lengkap tidak boleh kosong",
+        english: "Full name cannot be empty",
+      };
+      myError.status = 400;
+      myError.outputJson = jsonMessage.jsonFailed("MUDAMUDE-400", message);
+      throw myError;
+    }
+
+    if (!birthdate) {
+      message = {
+        indonesian: "Tanggal lahir tidak boleh kosong",
+        english: "Birth date cannot be empty",
+      };
+      myError.status = 400;
+      myError.outputJson = jsonMessage.jsonFailed("MUDAMUDE-400", message);
+      throw myError;
+    }
+
+    const data = await authPresenter.verifyUserData(
+      userId,
+      fullName,
+      birthdate
+    );
+  } catch (error) {
+    service.handleError(error, res);
+  }
+};
+
 module.exports = {
   userSignUp,
   userLogin,
+  verifyUser,
 };
